@@ -10,7 +10,7 @@ Service: https://x402.ochinimus.app. Header for a key or pass: `X-AgentFeed-Key:
 - Free sample: `https://x402.ochinimus.app/api/sample/morning-brief`
 - Question it answers: What changed overnight in BTC, ETH, SOL and HYPE, and what is the one level to watch?
 
-Use when an agent needs the overnight picture for BTC, ETH, SOL and HYPE in one answer. Returns the last 8 hours ranked by how abnormal each item is: price move against the coin's own usual 8-hour move, funding, open interest, liquidations (total, long/short split, biggest print), Fear and Greed, today's macro releases with UTC times, and the nearest liquidation cluster as the level to watch. A stale source is left out and named; with no sampler it answers 503, never billed.
+Use when an agent needs a one-answer summary of the last 8 hours in BTC, ETH, SOL and HYPE. Returns the items ranked by how abnormal each is: price move against the coin's own usual 8-hour move, funding, open interest, liquidations (total, long/short split, biggest print), Fear and Greed, today's macro releases with UTC times, and the nearest liquidation cluster as the level to watch. A stale source is left out and named; with no sampler it answers 503, never billed.
 
 ## Move alert: `GET /api/move-alert`
 
