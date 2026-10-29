@@ -1,0 +1,12 @@
+{
+  "name": "agentfeed-skills",
+  "description": "Skills for the AgentFeed market-data API",
+  "owner": { "name": "seekdaseek" },
+  "plugins": [
+    {
+      "name": "agentfeed",
+      "source": "./",
+      "description": "Short crypto market briefs from AgentFeed: the morning brief, unusual perp moves, funding / liquidation / open-interest anomalies. A prepaid key or brief pass covers scheduled runs with no payment prompt."
+    }
+  ]
+}
