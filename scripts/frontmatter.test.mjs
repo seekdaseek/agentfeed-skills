@@ -1,4 +1,5 @@
-// Strict-parser tests for the SKILL.md frontmatter (run: npm install && npm test).
+// Strict-parser tests for the SKILL.md frontmatter (run: npm install --no-save yaml && node --test scripts/frontmatter.test.mjs).
+// There is no package.json or lockfile in this repository on purpose: the Claude directory holds a plugin that installs dependencies from a lockfile for review.
 // The `yaml` package is the parser the skills CLI uses; on 30 Oct 2026 `npx skills add` refused b413fcb with
 // "Nested mappings are not allowed in compact mappings at line 2, column 14" because the description was unquoted and holds "signal: what".
 import test from 'node:test';
