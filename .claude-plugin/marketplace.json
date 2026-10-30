@@ -1,7 +1,7 @@
 {
   "name": "agentfeed-skills",
   "description": "Skills for the AgentFeed market-data API",
-  "owner": { "name": "seekdaseek" },
+  "owner": { "name": "ochinimus" },
   "plugins": [
     {
       "name": "agentfeed",

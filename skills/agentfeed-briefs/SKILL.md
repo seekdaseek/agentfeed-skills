@@ -4,7 +4,7 @@ description: Use when an agent needs a short crypto market brief or a perp signa
 license: MIT-0
 compatibility: Needs outbound HTTPS to the AgentFeed host and a way to send an HTTP header (curl or any HTTP client). Per-call payment needs an x402 client; scheduled runs need only an environment variable.
 metadata:
-  author: seekdaseek
+  author: ochinimus
   version: "0.1.0"
   openclaw:
     homepage: "https://x402.ochinimus.app"

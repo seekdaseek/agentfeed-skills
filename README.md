@@ -19,10 +19,10 @@ The skill is one folder, `skills/agentfeed-briefs`, so each store reads the same
 
 | Store | How it reads this repository |
 |---|---|
-| skills.sh | `npx skills add <owner>/agentfeed-skills --skill agentfeed-briefs` (finds `skills/<name>/SKILL.md`) |
-| Claude Code | `claude plugin marketplace add <owner>/agentfeed-skills`, then `claude plugin install agentfeed@agentfeed-skills` |
-| Hermes Agent | `hermes skills install <owner>/agentfeed-skills/skills/agentfeed-briefs` |
-| ClawHub | publish the folder `skills/agentfeed-briefs` (published skills are MIT-0, as is this package) |
+| skills.sh | `npx skills add seekdaseek/agentfeed-skills --skill agentfeed-briefs` (finds `skills/<name>/SKILL.md`) |
+| Claude Code | `claude plugin marketplace add seekdaseek/agentfeed-skills`, then `claude plugin install agentfeed@agentfeed-skills` |
+| Hermes Agent | `hermes skills install seekdaseek/agentfeed-skills/skills/agentfeed-briefs` |
+| ClawHub | publish the folder `skills/agentfeed-briefs` (ClawHub licenses every skill published there under MIT-0, which the skill's license line already says) |
 
 The skill never contains a key. Prices and pass terms in it are generated, so they follow the service; the live 402 challenge of each route is the authority.
 
@@ -34,4 +34,4 @@ node scripts/generate.mjs --check --repo ../agentfeed   # exits 1 and names any 
 node scripts/validate.mjs
 ```
 
-MIT-0.
+The repository is MIT, Copyright (c) 2026 ochinimus (see `LICENSE`). The skill folder `skills/agentfeed-briefs` is offered under MIT-0, which its `license:` line says: ClawHub licenses every skill published there under MIT-0 and allows no override, and HermesHub asks for a license line.
