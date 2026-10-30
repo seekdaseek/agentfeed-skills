@@ -1,6 +1,6 @@
 ---
 name: agentfeed-briefs
-description: Use when an agent needs a short crypto market brief: what changed overnight in BTC, ETH, SOL and HYPE with the one level to watch, which Hyperliquid perps moved unusually, or whether funding, liquidations or open interest are abnormal right now. Calls AgentFeed's brief routes over HTTP. Scheduled or unattended runs send a prepaid key or brief pass from the AGENTFEED_KEY environment variable, so no payment prompt is needed; attended runs can pay per call with x402. Describes what moved, never what to trade.
+description: Use when an agent needs a short crypto market brief or a perp signal: what changed overnight in BTC, ETH, SOL and HYPE with the one level to watch, which Hyperliquid perps moved unusually, whether funding, liquidations or open interest are abnormal right now, or the signal board and coin signals. Calls AgentFeed over HTTP. Scheduled or unattended runs send one flat signals pass (or a prepaid key) from the AGENTFEED_KEY environment variable, so no payment prompt is needed; attended runs can pay per call with x402. Describes what moved, never what to trade.
 license: MIT-0
 compatibility: Needs outbound HTTPS to the AgentFeed host and a way to send an HTTP header (curl or any HTTP client). Per-call payment needs an x402 client; scheduled runs need only an environment variable.
 metadata:
@@ -15,7 +15,7 @@ metadata:
     envVars:
       - name: AGENTFEED_KEY
         required: false
-        description: "A prepaid key or brief pass from AgentFeed (afk_...). Send it as the header X-AgentFeed-Key for unattended runs. Not needed when paying per call with x402."
+        description: "A signals pass or prepaid key from AgentFeed (afk_...). Send it as the header X-AgentFeed-Key for unattended runs. Not needed when paying per call with x402."
   hermes:
     tags: [crypto, market-data, briefs, x402]
     category: finance
@@ -23,9 +23,9 @@ metadata:
 
 # AgentFeed briefs
 
-{{count_words}} short briefs built only from data AgentFeed already collects. Each one gives the judgment (what changed, why it matters, the one level to watch), not a raw number. The text is templates over numbers: no language model, nothing invented. It never says what to trade, and you should not turn it into a trade instruction.
+{{count_words}} short briefs built only from data AgentFeed already collects, and the perp signal routes that sit beside them. Each one gives the judgment (what changed, why it matters, the one level to watch), not a raw number. The text is templates over numbers: no language model, nothing invented. It never says what to trade, and you should not turn it into a trade instruction.
 
-Service: {{origin}}. Every route is a GET, takes no parameter, and returns JSON.
+Service: {{origin}}. Every route is a GET and returns JSON. The three briefs take no parameter; the signal routes take the optional ones listed in [references/ROUTES.md](references/ROUTES.md) and in `/openapi.json`.
 
 ## When to use which brief
 
@@ -35,6 +35,14 @@ Service: {{origin}}. Every route is a GET, takes no parameter, and returns JSON.
 
 Pick by the question:
 {{questions}}
+
+The same key also reads the perp signal routes (below), so a scheduled run can mix them under one flat price:
+
+<!-- generated:begin signals -->
+{{signals_table}}
+<!-- generated:end signals -->
+
+{{signal_questions}}
 
 ## Pay: choose by how you run
 
@@ -54,11 +62,11 @@ There is no payment prompt, so a cron run cannot stall on one. Never print the k
 
 ## Try it free first
 
-`{{origin}}/api/sample/<route>` returns the brief's real response shape for nothing, e.g. `{{origin}}{{first_sample}}`. The numbers in a sample are generated, not market readings; use it to see the fields and the wording.
+`{{origin}}/api/sample/<route>` returns the brief's real response shape for nothing, e.g. `{{origin}}{{first_sample}}`. The numbers in the three brief samples are generated, not market readings; use them to see the fields and the wording. The signal routes' samples are trimmed captures of real answers.
 
 ## Reading an answer
 
-The body is `{ "tool", "data", "paid" }`. In `data`:
+The body of every route is `{ "tool", "data", "paid" }`. For the three briefs `data` is:
 
 - `headline`: one sentence, the most abnormal item. Quote it first.
 - `items[]`: ranked by `abnormality` (1.0 means an item just meets its rule). Each has `what`, `why_it_matters`, `numbers`, `source`, `as_of` and, when one exists, `level_to_watch`.

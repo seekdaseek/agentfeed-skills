@@ -1,8 +1,8 @@
 # agentfeed-skills
 
-One skill, `agentfeed-briefs`, for the [AgentFeed](https://x402.ochinimus.app) market-data API: three short crypto briefs (the morning brief for BTC, ETH, SOL and HYPE, unusual moves across Hyperliquid perps, and funding / liquidation / open-interest anomalies). Each brief gives the judgment and the one level to watch, not a raw number, and says what it could not read.
+One skill, `agentfeed-briefs`, for the [AgentFeed](https://x402.ochinimus.app) market-data API: three short crypto briefs (and the perp signal routes beside them) (the morning brief for BTC, ETH, SOL and HYPE, unusual moves across Hyperliquid perps, and funding / liquidation / open-interest anomalies). Each brief gives the judgment and the one level to watch, not a raw number, and says what it could not read.
 
-The skill's point is the scheduled run. A cron job or an unattended agent cannot approve an x402 payment, so it sends a prepaid key or a brief pass from the environment variable `AGENTFEED_KEY` as the header `X-AgentFeed-Key`: no payment prompt. An attended agent can pay per call with x402 instead.
+The skill's point is the scheduled run. A cron job or an unattended agent cannot approve an x402 payment, so it sends a signals pass (one flat key for the briefs and the perp signal routes) or a prepaid key from the environment variable `AGENTFEED_KEY` as the header `X-AgentFeed-Key`: no payment prompt. An attended agent can pay per call with x402 instead.
 
 ```
 skills/agentfeed-briefs/

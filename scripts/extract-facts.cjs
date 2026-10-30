@@ -14,6 +14,10 @@ const routes = BC.soldRoutes().map((r) => {
   const p = PRICES[`GET ${r}`];
   return { route: r, tool: p.tool, usd: p.usd, desc: p.desc, question: Q.questionFor(p.tool), title: T.TOOL_TITLES[p.tool], sample: `/api/sample/${r.replace('/api/', '')}` };
 });
+const signals = BC.SIGNAL_ROUTES.map((r) => {
+  const p = PRICES[`GET ${r}`];
+  return { route: r, shown: KL.showRoute(r), tool: p.tool, usd: p.usd, desc: p.desc, question: Q.questionFor(p.tool), title: T.TOOL_TITLES[p.tool] || p.tool, sample: `/api/sample/${r.replace('/api/', '').replace(/\/:.*$/, '')}` };
+});
 const pass = (k) => ({ id: k.id, label: k.label, usd: k.usd, days: k.days, path: k.path, tool: k.tool, routes: k.allow, pace_s: Object.values(k.pace)[0] / 1000, body: KL.exampleBody(k.tool) });
-console.log(JSON.stringify({ origin: D.ORIGIN, routes, passes: [pass(KL.BRIEF_PASS), pass(KL.BRIEF_DAY_PASS)], header: 'X-AgentFeed-Key', keys_page: '/keys',
+console.log(JSON.stringify({ origin: D.ORIGIN, routes, signal_routes: signals, passes: [pass(KL.SIGNALS_PASS), pass(KL.SIGNALS_DAY_PASS)], header: 'X-AgentFeed-Key', keys_page: '/keys',
   news_flag: BC.newsOn(), all_brief_routes: BC.ALL_ROUTES }));
