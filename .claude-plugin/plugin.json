@@ -1,6 +1,6 @@
 {
   "name": "agentfeed",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Short crypto market briefs from AgentFeed: the morning brief, unusual perp moves, funding / liquidation / open-interest anomalies. Scheduled runs use a prepaid key or brief pass from an environment variable; attended runs pay per call with x402.",
   "author": { "name": "ochinimus" },
   "homepage": "https://x402.ochinimus.app",

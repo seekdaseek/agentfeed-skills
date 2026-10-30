@@ -31,6 +31,7 @@ The skill never contains a key. Prices and pass terms in it are generated, so th
 ```bash
 node scripts/generate.mjs --repo ../agentfeed      # regenerate after the AgentFeed routes or prices change
 node scripts/generate.mjs --check --repo ../agentfeed   # exits 1 and names any file that has drifted
+npm install && npm test         # parses SKILL.md's frontmatter with the strict yaml package (the parser the skills CLI uses)
 node scripts/validate.mjs
 ```
 

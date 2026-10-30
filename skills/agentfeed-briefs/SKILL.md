@@ -1,24 +1,24 @@
 ---
-name: agentfeed-briefs
-description: Use when an agent needs a short crypto market brief or a perp signal: what changed overnight in BTC, ETH, SOL and HYPE with the one level to watch, which Hyperliquid perps moved unusually, whether funding, liquidations or open interest are abnormal right now, or the signal board and coin signals. Calls AgentFeed over HTTP. Scheduled or unattended runs send one flat signals pass (or a prepaid key) from the AGENTFEED_KEY environment variable, so no payment prompt is needed; attended runs can pay per call with x402. Describes what moved, never what to trade.
-license: MIT-0
-compatibility: Needs outbound HTTPS to the AgentFeed host and a way to send an HTTP header (curl or any HTTP client). Per-call payment needs an x402 client; scheduled runs need only an environment variable.
+name: "agentfeed-briefs"
+description: "Use when an agent needs a short crypto market brief or a perp signal: what changed overnight in BTC, ETH, SOL and HYPE with the one level to watch, which Hyperliquid perps moved unusually, whether funding, liquidations or open interest are abnormal right now, or the signal board and coin signals. Calls AgentFeed over HTTP. Scheduled or unattended runs send one flat signals pass (or a prepaid key) from the AGENTFEED_KEY environment variable, so no payment prompt is needed; attended runs can pay per call with x402. Describes what moved, never what to trade."
+license: "MIT-0"
+compatibility: "Needs outbound HTTPS to the AgentFeed host and a way to send an HTTP header (curl or any HTTP client). Per-call payment needs an x402 client; scheduled runs need only an environment variable."
 metadata:
-  author: ochinimus
-  version: "0.1.0"
+  author: "ochinimus"
+  version: "0.1.1"
   openclaw:
     homepage: "https://x402.ochinimus.app"
-    primaryEnv: AGENTFEED_KEY
+    primaryEnv: "AGENTFEED_KEY"
     requires:
       bins:
-        - curl
+        - "curl"
     envVars:
-      - name: AGENTFEED_KEY
+      - name: "AGENTFEED_KEY"
         required: false
         description: "A signals pass or prepaid key from AgentFeed (afk_...). Send it as the header X-AgentFeed-Key for unattended runs. Not needed when paying per call with x402."
   hermes:
     tags: [crypto, market-data, briefs, x402]
-    category: finance
+    category: "finance"
 ---
 
 # AgentFeed briefs

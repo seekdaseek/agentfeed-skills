@@ -1,0 +1,13 @@
+{
+  "name": "agentfeed-skills",
+  "private": true,
+  "type": "module",
+  "description": "Development checks for the agentfeed-skills package (not published).",
+  "scripts": {
+    "test": "node --test scripts/frontmatter.test.mjs",
+    "validate": "node scripts/validate.mjs"
+  },
+  "devDependencies": {
+    "yaml": "^2.9.1"
+  }
+}

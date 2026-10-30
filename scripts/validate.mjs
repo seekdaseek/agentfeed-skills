@@ -6,6 +6,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
+import { splitFrontmatter, parseStrict } from './frontmatter.mjs';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const errors = [];
 const bad = (m) => errors.push(m);
@@ -13,22 +14,22 @@ const skillsDir = path.join(root, 'skills');
 const names = fs.readdirSync(skillsDir).filter((d) => fs.statSync(path.join(skillsDir, d)).isDirectory());
 if (!names.length) bad('no skill directory under skills/');
 
-function frontmatter(text) {
-  const m = /^---\n([\s\S]*?)\n---\n/.exec(text);
-  if (!m) return null;
-  return m[1];
-}
-// a small YAML reader for the shapes this package uses: top-level scalars, one level of nested maps, block lists
-function topKeys(fm) { return [...fm.matchAll(/^([A-Za-z][A-Za-z0-9_-]*):(?: (.*))?$/gm)].map((x) => [x[1], x[2]]); }
+// The frontmatter is read with the strict `yaml` package, the parser the skills CLI uses: the loose reader this file had before accepted
+// `description: ... a perp signal: what changed ...` unquoted, which a strict parser refuses (b413fcb, 30 Oct 2026).
 
 for (const name of names) {
   const dir = path.join(skillsDir, name);
   const file = path.join(dir, 'SKILL.md');
   if (!fs.existsSync(file)) { bad(`${name}: SKILL.md is missing`); continue; }
   const text = fs.readFileSync(file, 'utf8');
-  const fm = frontmatter(text);
-  if (!fm) { bad(`${name}: no YAML frontmatter`); continue; }
-  const top = new Map(topKeys(fm));
+  const parts = splitFrontmatter(text);
+  if (!parts) { bad(`${name}: no YAML frontmatter`); continue; }
+  const fm = parts.fm;
+  const parsed = parseStrict(fm);
+  for (const m of [...parsed.errors, ...parsed.warnings]) bad(`${name}: frontmatter does not parse strictly: ${m}`);
+  if (!parsed.data) continue;
+  const top = new Map(Object.entries(parsed.data));
+  for (const k of ['name', 'description', 'license', 'compatibility']) if (top.has(k) && typeof top.get(k) !== 'string') bad(`${name}: ${k} must be a string`);
   const ALLOWED = new Set(['name', 'description', 'license', 'compatibility', 'metadata', 'allowed-tools']);
   for (const k of top.keys()) if (!ALLOWED.has(k)) bad(`${name}: frontmatter field "${k}" is not in the Agent Skills specification`);
   const fmName = (top.get('name') || '').trim();
@@ -52,7 +53,7 @@ for (const name of names) {
 }
 
 // the package never contains a key, a wallet secret or a personal address
-const walk = (d) => fs.readdirSync(d, { withFileTypes: true }).flatMap((e) => (e.name === '.git' ? [] : e.isDirectory() ? walk(path.join(d, e.name)) : [path.join(d, e.name)]));
+const walk = (d) => fs.readdirSync(d, { withFileTypes: true }).flatMap((e) => (e.name === '.git' || e.name === 'node_modules' ? [] : e.isDirectory() ? walk(path.join(d, e.name)) : [path.join(d, e.name)]));
 for (const f of walk(root)) {
   if (f === fileURLToPath(import.meta.url) || f.endsWith('NOTES.md')) continue;   // this file holds the patterns; NOTES.md quotes specs
   const t = fs.readFileSync(f, 'utf8');

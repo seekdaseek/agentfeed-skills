@@ -7,6 +7,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
+import { quoteFrontmatter, parseStrict, splitFrontmatter } from './frontmatter.mjs';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(here, '..');
@@ -69,8 +70,16 @@ const routesRef = [
   ...(F.news_flag ? [] : ['The regulatory news brief (`/api/news-brief`) is off on this build; it joins the passes when it is switched on.', '']),
 ].join('\n');
 
+// the frontmatter is written with every plain string double-quoted (a strict YAML parser refuses `description: ... signal: what ...`), then parsed strictly: a file that does not parse is never written
+function skillMd() {
+  const text = quoteFrontmatter(render(fs.readFileSync(path.join(here, 'skill.template.md'), 'utf8')));
+  const { errors, warnings } = parseStrict(splitFrontmatter(text).fm);
+  if (errors.length || warnings.length) throw new Error(`SKILL.md frontmatter does not parse strictly: ${[...errors, ...warnings].join('; ')}`);
+  return text;
+}
+
 const files = {
-  'skills/agentfeed-briefs/SKILL.md': render(fs.readFileSync(path.join(here, 'skill.template.md'), 'utf8')),
+  'skills/agentfeed-briefs/SKILL.md': skillMd(),
   'skills/agentfeed-briefs/references/SCHEDULING.md': render(fs.readFileSync(path.join(here, 'scheduling.template.md'), 'utf8')),
   'skills/agentfeed-briefs/references/ROUTES.md': routesRef,
 };
